@@ -1,34 +1,61 @@
 package com.aati.scm.model.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.aati.scm.config.ConnectionFactory;
 import com.aati.scm.model.entity.Paciente;
 
+
 public class PacienteDAO {
 
-    public void criarPaciente(Paciente paciente) {
-        try (Connection conn = ConnectionFactory.getConnection()) {
-            String sql = "INSERT INTO T_SCM_PACIENTE  NM_PACIENTE, CPF_PACIENTE, TEL_PACIENTE, END_PACIENTE, HIST_PACIENTE  VALUES  (?,?,?,?,?)";
+    // Inserir novo paciente
+    public void inserir(Paciente p) {
+        String sql = "INSERT INTO T_SCM_PACIENTES (nome, cpf, telefone, endereco, historico) VALUES (?, ?, ?, ?, ?)";
 
-            PreparedStatement pr = conn.prepareStatement(sql);
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            pr.setString(1, paciente.getNome());
-            pr.setString(2, paciente.getCpf());
-            pr.setString(3, paciente.getTelefone());
-            pr.setString(4, paciente.getEndereco());
-            pr.setString(5, paciente.getHistorico());
-            
+            stmt.setString(1, p.getNome());
+            stmt.setString(2, p.getCpf());
+            stmt.setString(3, p.getTelefone());
+            stmt.setString(4, p.getEndereco());
+            stmt.setString(5, p.getHistorico());
 
-            pr.executeUpdate();
+            stmt.executeUpdate();
 
-            System.out.println("Produto inserido!");
+            System.out.println("Paciente cadastrado com sucesso!");
+
         } catch (SQLException e) {
-
+            System.out.println("Erro ao inserir paciente: " + e.getMessage());
         }
-
     }
 
+    // Listar pacientes
+    public List<Paciente> listar() {
+        List<Paciente> lista = new ArrayList<>();
+        String sql = "SELECT * FROM T_SCM_PACIENTES ORDER BY nome";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Paciente p = new Paciente();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setCpf(rs.getString("cpf"));
+                p.setTelefone(rs.getString("telefone"));
+                p.setEndereco(rs.getString("endereco"));
+                p.setHistorico(rs.getString("historico"));
+                lista.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar pacientes: " + e.getMessage());
+        }
+
+        return lista;
+    }
 }
