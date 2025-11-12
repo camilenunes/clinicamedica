@@ -15,7 +15,7 @@ public class PainelMedicos extends JPanel {
     private JTextField txtTelefone;
     private JTextField txtEmail;
     private JTextField txtEndereco;
-    private JTextArea txtObservacoes;
+
 
     private JTable tabela;
     private DefaultTableModel modelo;
@@ -46,7 +46,6 @@ public class PainelMedicos extends JPanel {
         JLabel lblTelefone = new JLabel("Telefone:");
         JLabel lblEmail = new JLabel("E-mail:");
         JLabel lblEndereco = new JLabel("Endereço:");
-        JLabel lblObservacoes = new JLabel("Observações:");
 
         txtNome = new JTextField(20);
         txtCRM = new JTextField(10);
@@ -54,8 +53,6 @@ public class PainelMedicos extends JPanel {
         txtTelefone = new JTextField(12);
         txtEmail = new JTextField(20);
         txtEndereco = new JTextField(25);
-        txtObservacoes = new JTextArea(3, 20);
-        JScrollPane scrollObs = new JScrollPane(txtObservacoes);
 
         gbc.gridx = 0; gbc.gridy = 0; formPanel.add(lblNome, gbc);
         gbc.gridx = 1; formPanel.add(txtNome, gbc);
@@ -75,8 +72,6 @@ public class PainelMedicos extends JPanel {
         gbc.gridx = 0; gbc.gridy = 5; formPanel.add(lblEndereco, gbc);
         gbc.gridx = 1; formPanel.add(txtEndereco, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 6; formPanel.add(lblObservacoes, gbc);
-        gbc.gridx = 1; formPanel.add(scrollObs, gbc);
 
         // ---------- BOTÕES ----------
         JButton btnSalvar = new JButton("Salvar");
@@ -116,8 +111,6 @@ public class PainelMedicos extends JPanel {
             m.setTelefone(txtTelefone.getText());
             m.setEmail(txtEmail.getText());
             m.setEndereco(txtEndereco.getText());
-            m.setObservacoes(txtObservacoes.getText());
-
             medicoDAO.inserir(m);
             JOptionPane.showMessageDialog(this, "Médico cadastrado com sucesso!");
             limparCampos();
@@ -134,7 +127,7 @@ public class PainelMedicos extends JPanel {
         txtTelefone.setText("");
         txtEmail.setText("");
         txtEndereco.setText("");
-        txtObservacoes.setText("");
+
     }
 
     private void atualizarTabela() {

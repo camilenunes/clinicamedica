@@ -13,34 +13,14 @@ import com.aati.scm.model.entity.Medico;
 public class MedicoDAO {
 
     public MedicoDAO() {
-        criarTabela();
+        
     }
 
-    // Cria a tabela se não existir
-    private void criarTabela() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS medicos (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                crm TEXT NOT NULL UNIQUE,
-                especialidade TEXT,
-                telefone TEXT,
-                email TEXT,
-                endereco TEXT,
-                observacoes TEXT
-            )
-        """;
-        try (Connection conn = ConnectionFactory.getConnection();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            System.out.println("Erro ao criar tabela: " + e.getMessage());
-        }
-    }
+    
 
     // Inserir médico
     public boolean inserir(Medico medico) {
-        String sql = "INSERT INTO medicos(nome, crm, especialidade, telefone, email, endereco, observacoes) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO T_SCM_MEDICOS(nome, crm, especialidade, telefone, email, endereco) VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -50,7 +30,6 @@ public class MedicoDAO {
             stmt.setString(4, medico.getTelefone());
             stmt.setString(5, medico.getEmail());
             stmt.setString(6, medico.getEndereco());
-            stmt.setString(7, medico.getObservacoes());
 
             stmt.executeUpdate();
             return true;
@@ -63,7 +42,7 @@ public class MedicoDAO {
     // Listar médicos
     public List<Medico> listar() {
         List<Medico> lista = new ArrayList<>();
-        String sql = "SELECT * FROM medicos";
+        String sql = "SELECT * FROM T_SCM_MEDICOS";
 
         try (Connection conn = ConnectionFactory.getConnection();
              Statement stmt = conn.createStatement();
@@ -78,7 +57,6 @@ public class MedicoDAO {
                 m.setTelefone(rs.getString("telefone"));
                 m.setEmail(rs.getString("email"));
                 m.setEndereco(rs.getString("endereco"));
-                m.setObservacoes(rs.getString("observacoes"));
                 lista.add(m);
             }
         } catch (SQLException e) {

@@ -9,7 +9,7 @@ public class Medico {
     private String telefone;
     private String email;
     private String endereco;
-    private String observacoes;
+
 
     // Construtor vazio (necessário para frameworks e JDBC)
     public Medico() {}
@@ -24,7 +24,7 @@ public class Medico {
         this.telefone = telefone;
         this.email = email;
         this.endereco = endereco;
-        this.observacoes = observacoes;
+
     }
 
     // Getters e Setters
@@ -49,8 +49,7 @@ public class Medico {
     public String getEndereco() { return endereco; }
     public void setEndereco(String endereco) { this.endereco = endereco; }
 
-    public String getObservacoes() { return observacoes; }
-    public void setObservacoes(String observacoes) { this.observacoes = observacoes; }
+
 
     @Override
     public String toString() {
