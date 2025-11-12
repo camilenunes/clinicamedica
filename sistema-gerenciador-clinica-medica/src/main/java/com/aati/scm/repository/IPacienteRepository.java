@@ -11,7 +11,7 @@ public class IPacienteRepository implements PacienteRepository {
 
     @Override
     public void salvarPaciente(Paciente paciente) {
-        pacienteDAO.criarPaciente(paciente);
+        pacienteDAO.inserir(paciente);
     }
 
     @Override
