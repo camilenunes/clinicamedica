@@ -16,86 +16,128 @@ public class PainelLogin extends JPanel {
     private JTextField campoUsuario;
     private JPasswordField campoSenha;
     private JButton botaoLogin, botaoSair;
-
-    private LoginDAO loginDAO ;
+    private LoginDAO loginDAO;
 
     public PainelLogin() throws SQLException {
+
         this.loginDAO = new LoginDAO(ConnectionFactory.getConnection());
 
-        setLayout(new BorderLayout(15, 15));
-        setBackground(new Color(245, 248, 255)); // fundo azul claro
+        setLayout(new GridBagLayout()); 
+        setBackground(new Color(235, 239, 255));
 
-        // TÍTULO
-        JLabel titulo = new JLabel("Acesso ao Sistema", SwingConstants.CENTER);
-        titulo.setFont(new Font("Segoe UI", Font.BOLD, 26));
-        titulo.setForeground(new Color(40, 80, 180));
-        titulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        add(titulo, BorderLayout.NORTH);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
 
-        // PAINEL CAMPOS
-        JPanel painelCampos = new JPanel(new GridLayout(2, 2, 15, 15));
-        painelCampos.setBackground(Color.WHITE);
-        painelCampos.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(210, 220, 240), 1, true),
-            BorderFactory.createEmptyBorder(25, 30, 25, 30)
+        // -------------------------------
+        // CAIXA BRANCA CENTRAL
+        // -------------------------------
+        JPanel card = new JPanel();
+        card.setBackground(Color.WHITE);
+        card.setPreferredSize(new Dimension(350, 350));
+        card.setLayout(new GridBagLayout());
+        card.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true),
+                BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
 
-        JLabel labelUsuario = new JLabel("Usuário:");
-        JLabel labelSenha = new JLabel("Senha:");
+        GridBagConstraints g = new GridBagConstraints();
+        g.insets = new Insets(8, 8, 8, 8);
+        g.fill = GridBagConstraints.HORIZONTAL;
 
-        labelUsuario.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        labelSenha.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        // -------------------------------
+        // TÍTULO
+        // -------------------------------
+        JLabel titulo = new JLabel("Login do Sistema", SwingConstants.CENTER);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titulo.setForeground(new Color(30, 60, 160));
+
+        g.gridx = 0;  
+        g.gridy = 0;
+        g.gridwidth = 2;
+        card.add(titulo, g);
+
+        // -------------------------------
+        // CAMPO LOGIN
+        // -------------------------------
+        JLabel labelUsuario = new JLabel("Usuário:");
+        labelUsuario.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         labelUsuario.setForeground(new Color(50, 60, 90));
+
+        g.gridy++; 
+        g.gridwidth = 2;
+        card.add(labelUsuario, g);
+
+        campoUsuario = new JTextField();
+        estilizarCampo(campoUsuario);
+
+        g.gridy++;
+        card.add(campoUsuario, g);
+
+        // -------------------------------
+        // CAMPO SENHA
+        // -------------------------------
+        JLabel labelSenha = new JLabel("Senha:");
+        labelSenha.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         labelSenha.setForeground(new Color(50, 60, 90));
 
-        campoUsuario = criarCampoTexto();
+        g.gridy++;
+        card.add(labelSenha, g);
+
         campoSenha = new JPasswordField();
-        campoSenha.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        campoSenha.setBorder(BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true));
-        campoSenha.setBackground(new Color(250, 250, 255));
+        estilizarCampo(campoSenha);
 
-        painelCampos.add(labelUsuario);
-        painelCampos.add(campoUsuario);
-        painelCampos.add(labelSenha);
-        painelCampos.add(campoSenha);
+        g.gridy++;
+        card.add(campoSenha, g);
 
-        add(painelCampos, BorderLayout.CENTER);
+        // -------------------------------
+        // BOTÕES
+        // -------------------------------
+        botaoLogin = criarBotao("Entrar", new Color(52, 120, 235));
+        botaoSair  = criarBotao("Sair", new Color(180, 60, 60));
 
-        // PAINEL BOTÕES
-        JPanel painelBotoes = new JPanel();
-        painelBotoes.setBackground(new Color(245, 248, 255));
+        g.gridy++;
+        g.gridwidth = 1;
+        g.gridx = 0;
+        card.add(botaoLogin, g);
 
-        botaoLogin = criarBotao("💻 Logar", new Color(52, 120, 235));
-        botaoSair  = criarBotao("❌ Sair", new Color(180, 60, 60));
+        g.gridx = 1;
+        card.add(botaoSair, g);
 
-        painelBotoes.add(botaoLogin);
-        painelBotoes.add(botaoSair);
+        // Adiciona o card ao centro
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        add(card, gbc);
 
-        add(painelBotoes, BorderLayout.SOUTH);
-
-        // AÇÕES
+        // Ações
         botaoLogin.addActionListener(e -> logar());
         botaoSair.addActionListener(e -> System.exit(0));
     }
 
-    // CAMPO ESTILIZADO
-    private JTextField criarCampoTexto() {
-        JTextField txt = new JTextField();
-        txt.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txt.setBackground(new Color(250, 250, 255));
-        txt.setBorder(BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true));
-        return txt;
+    // -------------------------------
+    // ESTILO DOS CAMPOS
+    // -------------------------------
+    private void estilizarCampo(JTextField campo) {
+        campo.setPreferredSize(new Dimension(200, 35));
+        campo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        campo.setBackground(new Color(248, 248, 255));
+        campo.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true),
+                BorderFactory.createEmptyBorder(5, 8, 5, 8)
+        ));
     }
 
-    // BOTÃO ESTILIZADO
+    // -------------------------------
+    // ESTILO DOS BOTÕES
+    // -------------------------------
     private JButton criarBotao(String texto, Color cor) {
         JButton btn = new JButton(texto);
         btn.setFocusPainted(false);
         btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
         btn.setForeground(Color.WHITE);
         btn.setBackground(cor);
-        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        btn.setBorder(BorderFactory.createEmptyBorder(8, 20, 8, 20));
 
         btn.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) { btn.setBackground(cor.darker()); }
@@ -105,48 +147,45 @@ public class PainelLogin extends JPanel {
         return btn;
     }
 
-    // ----------------------------------------------------
-    // 🔐 LÓGICA COMPLETA DE LOGIN COM LoginDAO
-    // ----------------------------------------------------
+    // -------------------------------
+    // LÓGICA DO LOGIN
+    // -------------------------------
     private void logar() {
         String username = campoUsuario.getText();
         String senhaDigitada = new String(campoSenha.getPassword());
-
+    
         try {
             Login usuario = loginDAO.buscarPorUsername(username);
-
+    
             if (usuario == null) {
                 JOptionPane.showMessageDialog(this, "Usuário não encontrado!");
                 return;
             }
-
+    
             if (!usuario.isAtivo()) {
                 JOptionPane.showMessageDialog(this, "Usuário está desativado!");
                 return;
             }
-
-            // --------- Comparação de senha ----------
-            // Caso esteja usando hash, coloque aqui a verificação com BCrypt
-            //
-            // if (!BCrypt.checkpw(senhaDigitada, usuario.getSenha())) ...
-            //-----------------------------------------
-
+    
+            // Comparação de senha (mude para hash se quiser)
             if (!senhaDigitada.equals(usuario.getSenha())) {
                 JOptionPane.showMessageDialog(this, "Senha incorreta!");
                 return;
             }
-
+    
             // LOGIN OK
             JOptionPane.showMessageDialog(this,
                 "Bem-vindo(a), " + usuario.getNomeCompleto() + "!");
-
-            // FECHA A JANELA ATUAL (onde o painel está)
-            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            frame.dispose();
-
-            // ABRE A TELA PRINCIPAL OU RELATÓRIOS
-            new PainelRelatorio();
-
+    
+            // FECHAR JANELA DE LOGIN
+            JFrame janela = (JFrame) SwingUtilities.getWindowAncestor(this);
+            janela.dispose();
+    
+            // ABRIR JANELA DE RELATÓRIO (QUE É UM JFRAME)
+            PainelRelatorio telaRelatorio = new PainelRelatorio();
+            telaRelatorio.setLocationRelativeTo(null);
+            telaRelatorio.setVisible(true);
+    
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
                 "Erro ao realizar login: " + e.getMessage(),
@@ -155,4 +194,6 @@ public class PainelLogin extends JPanel {
             );
         }
     }
-}
+    
+    }
+    
