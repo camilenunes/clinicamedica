@@ -51,7 +51,7 @@ CREATE TABLE
     username VARCHAR(100) NOT NULL UNIQUE,
     senha_hash VARCHAR(255) NOT NULL,
     nome_completo VARCHAR(150),
-    papel ENUM ('admin', 'medico', 'secretaria') DEFAULT 'secretaria',
+    papel ENUM ('ADMIN', 'MEDICO', 'SECRETARIA') DEFAULT 'SECRETARIA',
     ativo TINYINT (1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -80,15 +80,16 @@ CREATE TABLE
 
 CREATE TABLE
   IF NOT EXISTS T_SCM_ATENDIMENTO (
-    id_atendimento int not null AUTO_INCREMENT,
+    id_atendimento int not null primary key AUTO_INCREMENT,
     ds_diagnostico VARCHAR(255) NOT NULL,
     ds_sintomas VARCHAR(255) NOT NULL,
     ds_observacoes VARCHAR(255) NOT NULL,
     id_paciente int not null,
     id_medico int not null
-  )
-alter table T_SCM_ATENDIMENTO add CONSTRAINT FK_PACIENTE_ATENDIMENTO FOREIGN KEY (id_paciente) REFERENCES T_SCM_PACIENTES,
-add CONSTRAINT FK_MEDICO_ATENDIMENTO FOREIGN KEY (id_medico) REFERENCES T_SCM_MEDICOS;
+  );
+alter table T_SCM_ATENDIMENTO 
+add CONSTRAINT FK_PACIENTE_ATENDIMENTO FOREIGN KEY (id_paciente) REFERENCES T_SCM_PACIENTES (id),
+add CONSTRAINT FK_MEDICO_ATENDIMENTO FOREIGN KEY (id_medico) REFERENCES T_SCM_MEDICOS (id);
 
 -- ============================================================
 -- 6️⃣ VIEW OPCIONAL (Relatório de Consultas)
