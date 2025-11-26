@@ -4,7 +4,7 @@ package com.aati.scm.model.entity;
 public class Atendimento{
 
 
-    private String diagnostivo;
+    private String diagnostico;
     private String sintomas;
     private String observacoes;
     private Paciente paciente;
@@ -12,11 +12,11 @@ public class Atendimento{
 
 
 
-    public String getDiagnostivo() {
-        return diagnostivo;
+    public String getDiagnostico() {
+        return diagnostico;
     }
-    public void setDiagnostivo(String diagnostivo) {
-        this.diagnostivo = diagnostivo;
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
     }
     public String getSintomas() {
         return sintomas;

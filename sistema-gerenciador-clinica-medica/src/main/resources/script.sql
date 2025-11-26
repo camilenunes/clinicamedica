@@ -194,6 +194,7 @@ VALUES
 -- ============================================================
 -- ✅ FIM DO SCRIPT
 -- ============================================================
+
 USE clinica_scm;
 
 SELECT
@@ -210,7 +211,6 @@ SELECT
   p.nome as nome_paciente,
   p.cpf,
   p.telefone as telefone_paciente,
-  p.endereco,
   p.historico,
   p.created_at,
   p.updated_at
