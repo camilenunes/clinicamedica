@@ -20,7 +20,7 @@ public class MedicoDAO {
 
     // Inserir médico
     public boolean inserir(Medico medico) {
-        String sql = "INSERT INTO T_SCM_MEDICOS(nome, crm, especialidade, telefone, email) VALUES(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO T_SCM_MEDICOS(nome, crm, especialidade, telefone, email) VALUES(?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 

@@ -14,7 +14,6 @@ public class PainelMedicos extends JPanel {
     private JTextField txtEspecialidade;
     private JTextField txtTelefone;
     private JTextField txtEmail;
-    private JTextField txtEndereco;
 
 
     private JTable tabela;
@@ -45,14 +44,12 @@ public class PainelMedicos extends JPanel {
         JLabel lblEspecialidade = new JLabel("Especialidade:");
         JLabel lblTelefone = new JLabel("Telefone:");
         JLabel lblEmail = new JLabel("E-mail:");
-        JLabel lblEndereco = new JLabel("Endereço:");
 
         txtNome = new JTextField(20);
         txtCRM = new JTextField(10);
         txtEspecialidade = new JTextField(15);
         txtTelefone = new JTextField(12);
         txtEmail = new JTextField(20);
-        txtEndereco = new JTextField(25);
 
         gbc.gridx = 0; gbc.gridy = 0; formPanel.add(lblNome, gbc);
         gbc.gridx = 1; formPanel.add(txtNome, gbc);
@@ -69,8 +66,6 @@ public class PainelMedicos extends JPanel {
         gbc.gridx = 0; gbc.gridy = 4; formPanel.add(lblEmail, gbc);
         gbc.gridx = 1; formPanel.add(txtEmail, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 5; formPanel.add(lblEndereco, gbc);
-        gbc.gridx = 1; formPanel.add(txtEndereco, gbc);
 
 
         // ---------- BOTÕES ----------
@@ -110,7 +105,6 @@ public class PainelMedicos extends JPanel {
             m.setEspecialidade(txtEspecialidade.getText());
             m.setTelefone(txtTelefone.getText());
             m.setEmail(txtEmail.getText());
-            m.setEndereco(txtEndereco.getText());
             medicoDAO.inserir(m);
             JOptionPane.showMessageDialog(this, "Médico cadastrado com sucesso!");
             limparCampos();
@@ -126,7 +120,6 @@ public class PainelMedicos extends JPanel {
         txtEspecialidade.setText("");
         txtTelefone.setText("");
         txtEmail.setText("");
-        txtEndereco.setText("");
 
     }
 
