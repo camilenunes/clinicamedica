@@ -8,6 +8,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import com.aati.scm.model.dao.AgendamentoDAO;
+import com.aati.scm.model.dao.MedicoDAO;
+import com.aati.scm.model.dao.PacienteDAO;
 import com.aati.scm.model.entity.Agendamento;
 import com.aati.scm.model.entity.Medico;
 import com.aati.scm.model.entity.Paciente;
@@ -16,9 +18,14 @@ public class PainelAgendamentos extends JPanel {
 
     private JTable tabela;
     private DefaultTableModel modeloTabela;
-    private JTextField txtId, txtPacienteId, txtMedicoId, txtDataHora, txtStatus, txtSintomas, txtDiagnostico, txtObservacoes;
+    private JTextField txtId, txtDataHora, txtStatus, txtSintomas, txtDiagnostico, txtObservacoes;
     private JButton btnAdicionar, btnAtualizar, btnExcluir, btnLimpar, btnRecarregar;
+    private JComboBox<Paciente> comboBoxPacientes = new JComboBox<Paciente>();
+    private JComboBox<Medico> comboBoxMedicos = new JComboBox<Medico>();
+
     private AgendamentoDAO dao;
+    private PacienteDAO pacienteDAO = new PacienteDAO();
+    private MedicoDAO medicoDAO = new MedicoDAO();
 
     public PainelAgendamentos() {
         dao = new AgendamentoDAO();
@@ -42,8 +49,17 @@ public class PainelAgendamentos extends JPanel {
 
         txtId = new JTextField();
         txtId.setEnabled(false);
-        txtPacienteId = new JTextField();
-        txtMedicoId = new JTextField();
+        
+        pacienteDAO.listar().forEach((paciente) ->{
+            comboBoxPacientes.addItem(paciente);
+            
+        }
+        );
+
+        medicoDAO.listar().forEach((medico)->{
+            comboBoxMedicos.addItem(medico);
+        });
+        
         txtDataHora = new JTextField();
         txtStatus = new JTextField("agendada");
         txtSintomas = new JTextField();
@@ -53,9 +69,9 @@ public class PainelAgendamentos extends JPanel {
         painelForm.add(new JLabel("ID:"));
         painelForm.add(txtId);
         painelForm.add(new JLabel("ID Paciente:"));
-        painelForm.add(txtPacienteId);
+        painelForm.add(comboBoxPacientes);
         painelForm.add(new JLabel("ID Médico:"));
-        painelForm.add(txtMedicoId);
+        painelForm.add(comboBoxMedicos);
         painelForm.add(new JLabel("Data/Hora (AAAA-MM-DD HH:MM:SS):"));
         painelForm.add(txtDataHora);
         painelForm.add(new JLabel("Status:"));
@@ -93,8 +109,8 @@ public class PainelAgendamentos extends JPanel {
                 int row = tabela.getSelectedRow();
                 if (row >= 0) {
                     txtId.setText(modeloTabela.getValueAt(row, 0).toString());
-                    txtPacienteId.setText(modeloTabela.getValueAt(row, 1).toString());
-                    txtMedicoId.setText(modeloTabela.getValueAt(row, 2).toString());
+                    comboBoxPacientes.setSelectedItem(modeloTabela.getValueAt(row, 1));
+                    comboBoxMedicos.setSelectedItem(modeloTabela.getValueAt(row, 2));
                     txtDataHora.setText(modeloTabela.getValueAt(row, 3).toString());
                     txtStatus.setText(modeloTabela.getValueAt(row, 4).toString());
                     txtSintomas.setText(modeloTabela.getValueAt(row, 5).toString());
@@ -133,12 +149,10 @@ public class PainelAgendamentos extends JPanel {
     private void adicionarAgendamento() {
         try {
             Agendamento a = new Agendamento();
-            Paciente p = new Paciente();
-            p.setId(Integer.parseInt(txtPacienteId.getText()));
+            Paciente p = (Paciente) comboBoxPacientes.getSelectedItem();
             a.setPaciente(p);
 
-            Medico m = new Medico();
-            m.setId(Integer.parseInt(txtMedicoId.getText()));
+            Medico m = (Medico) comboBoxMedicos.getSelectedItem();
             a.setMedico(m);
 
             a.setDataHora(Timestamp.valueOf(txtDataHora.getText()));
@@ -169,12 +183,11 @@ public class PainelAgendamentos extends JPanel {
             Agendamento a = new Agendamento();
             a.setId(Integer.parseInt(txtId.getText()));
 
-            Paciente p = new Paciente();
-            p.setId(Integer.parseInt(txtPacienteId.getText()));
+            Paciente p = (Paciente) comboBoxPacientes.getSelectedItem();
             a.setPaciente(p);
 
-            Medico m = new Medico();
-            m.setId(Integer.parseInt(txtMedicoId.getText()));
+            Medico m = (Medico) comboBoxMedicos.getSelectedItem();
+            a.setMedico(m);
             a.setMedico(m);
 
             a.setDataHora(Timestamp.valueOf(txtDataHora.getText()));
@@ -219,8 +232,8 @@ public class PainelAgendamentos extends JPanel {
 
     private void limparCampos() {
         txtId.setText("");
-        txtPacienteId.setText("");
-        txtMedicoId.setText("");
+        comboBoxPacientes.setSelectedItem(null);
+        comboBoxMedicos.setSelectedItem(null);
         txtDataHora.setText("");
         txtStatus.setText("agendada");
         txtSintomas.setText("");

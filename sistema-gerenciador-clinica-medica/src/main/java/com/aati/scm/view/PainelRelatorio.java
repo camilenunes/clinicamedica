@@ -81,8 +81,6 @@ public class PainelRelatorio extends JFrame {
 
             // ============================
             //          PACIENTES
-            // Obs: Como você não me forneceu PacienteDAO,
-            // vou pegar pacientes pelos Atendimentos.
             // ============================
             case "Pacientes":
                 areaResultados.append("📌 Lista de Pacientes:\n\n");
