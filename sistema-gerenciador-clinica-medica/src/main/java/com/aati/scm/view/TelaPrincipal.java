@@ -1,11 +1,13 @@
 package com.aati.scm.view;
 
+import java.sql.SQLException;
+
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 public class TelaPrincipal extends JFrame {
 
-    public TelaPrincipal() {
+    public TelaPrincipal() throws SQLException {
         setTitle("🏥 Sistema de Clínica Médica");
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -17,9 +19,10 @@ public class TelaPrincipal extends JFrame {
         // Adicionar os módulos (cada um é um JPanel)
         abas.addTab("Pacientes", new PainelPacientes());
         abas.addTab("Médicos", new PainelMedicos());
-        // abas.addTab("Consultas", new PainelConsultas());
+        abas.addTab("Consultas", new PainelAgendamentos());
         abas.addTab("Prontuário", new PainelAtendimentos());
-        // abas.addTab("Relatórios / Login", new PainelRelatoriosLogin());
+        abas.addTab("Login", new PainelLogin());
+        abas.addTab("Cadastro usuário", new PainelCadastro());
 
         add(abas);
     }

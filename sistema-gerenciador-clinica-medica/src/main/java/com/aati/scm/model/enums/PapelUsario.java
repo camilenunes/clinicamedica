@@ -2,9 +2,9 @@ package com.aati.scm.model.enums;
 
 public enum PapelUsario {
 
-    ADMIN("admin"),
-    MEDICO("medico"),
-    SECRETARIA("secretaria");
+    ADMIN("ADMIN"),
+    MEDICO("MEDICO"),
+    SECRETARIA("SECRETARIA");
 
     private final String value;
 
