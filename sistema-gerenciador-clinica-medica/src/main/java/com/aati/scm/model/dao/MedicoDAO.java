@@ -20,7 +20,7 @@ public class MedicoDAO {
 
     // Inserir médico
     public boolean inserir(Medico medico) {
-        String sql = "INSERT INTO T_SCM_MEDICOS(nome, crm, especialidade, telefone, email, endereco) VALUES(?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO T_SCM_MEDICOS(nome, crm, especialidade, telefone, email) VALUES(?, ?, ?, ?, ?, ?)";
         try (Connection conn = ConnectionFactory.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -29,7 +29,6 @@ public class MedicoDAO {
             stmt.setString(3, medico.getEspecialidade());
             stmt.setString(4, medico.getTelefone());
             stmt.setString(5, medico.getEmail());
-            stmt.setString(6, medico.getEndereco());
 
             stmt.executeUpdate();
             return true;
@@ -56,7 +55,6 @@ public class MedicoDAO {
                 m.setEspecialidade(rs.getString("especialidade"));
                 m.setTelefone(rs.getString("telefone"));
                 m.setEmail(rs.getString("email"));
-                m.setEndereco(rs.getString("endereco"));
                 lista.add(m);
             }
         } catch (SQLException e) {

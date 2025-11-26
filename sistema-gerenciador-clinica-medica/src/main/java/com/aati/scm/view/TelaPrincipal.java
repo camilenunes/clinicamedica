@@ -17,9 +17,9 @@ public class TelaPrincipal extends JFrame {
         // Adicionar os módulos (cada um é um JPanel)
         abas.addTab("Pacientes", new PainelPacientes());
         abas.addTab("Médicos", new PainelMedicos());
-       // abas.addTab("Consultas", new PainelConsultas());
-       // abas.addTab("Prontuário", new PainelProntuario());
-        //abas.addTab("Relatórios / Login", new PainelRelatoriosLogin());
+        // abas.addTab("Consultas", new PainelConsultas());
+        abas.addTab("Prontuário", new PainelAtendimentos());
+        // abas.addTab("Relatórios / Login", new PainelRelatoriosLogin());
 
         add(abas);
     }
