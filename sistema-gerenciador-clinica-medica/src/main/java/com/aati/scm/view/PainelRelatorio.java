@@ -14,136 +14,163 @@ public class PainelRelatorio extends JFrame {
     private JButton botaoPesquisar;
     private JTextArea areaResultados;
 
-    // Instâncias DAO
     private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     private AtendimentoDAO atendimentoDAO = new AtendimentoDAO();
     private MedicoDAO medicoDAO = new MedicoDAO();
 
     public PainelRelatorio() {
-        setTitle("Tela de Relatórios");
-        setSize(650, 470);
+
+        setTitle("📊 Tela de Relatórios");
+        setSize(700, 520);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new BorderLayout());
 
-        getContentPane().setBackground(new Color(245, 248, 255));
+        // ---------------------------
+        // TEMA GERAL
+        // ---------------------------
+        Color fundo = new Color(240, 244, 255);
+        Color card = new Color(255, 255, 255);
+        Color azul = new Color(52, 120, 235);
 
+        getContentPane().setBackground(fundo);
+        setLayout(new GridBagLayout()); // deixa tudo centralizado
+
+        // ---------------------------
+        // CARD CENTRAL
+        // ---------------------------
+        JPanel cardPanel = new JPanel();
+        cardPanel.setPreferredSize(new Dimension(620, 430));
+        cardPanel.setBackground(card);
+        cardPanel.setLayout(new BorderLayout(15, 15));
+        cardPanel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220, 225, 245), 1, true),
+                BorderFactory.createEmptyBorder(20, 25, 20, 25)
+        ));
+
+        // ---------------------------
+        // TÍTULO
+        // ---------------------------
         JLabel titulo = new JLabel("Relatórios do Sistema", SwingConstants.CENTER);
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 26));
         titulo.setForeground(new Color(40, 80, 180));
-        titulo.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
-        add(titulo, BorderLayout.NORTH);
+        titulo.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        cardPanel.add(titulo, BorderLayout.NORTH);
 
-        JPanel painelSuperior = new JPanel(new FlowLayout());
-        painelSuperior.setBackground(Color.WHITE);
+        // ---------------------------
+        // PAINEL SUPERIOR (opções)
+        // ---------------------------
+        JPanel painelSuperior = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 10));
+        painelSuperior.setBackground(card);
 
         JLabel labelBusca = new JLabel("Buscar por:");
-        labelBusca.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        labelBusca.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        labelBusca.setForeground(new Color(60, 70, 100));
 
         String[] opcoes = { "Pacientes", "Consultas", "Médicos", "Exames" };
         caixaBusca = new JComboBox<>(opcoes);
+        caixaBusca.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        caixaBusca.setPreferredSize(new Dimension(150, 30));
 
-        botaoPesquisar = criarBotao("🔍 Pesquisar", new Color(52, 120, 235));
-        botaoPesquisar.addActionListener(e -> pesquisar());
+        botaoPesquisar = new JButton("🔍 Pesquisar");
+        botaoPesquisar.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        botaoPesquisar.setForeground(Color.WHITE);
+        botaoPesquisar.setBackground(azul);
+        botaoPesquisar.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
+        botaoPesquisar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         painelSuperior.add(labelBusca);
         painelSuperior.add(caixaBusca);
         painelSuperior.add(botaoPesquisar);
 
-        add(painelSuperior, BorderLayout.NORTH);
+        cardPanel.add(painelSuperior, BorderLayout.PAGE_START);
 
+        // ---------------------------
+        // RESULTADO DOS RELATÓRIOS
+        // ---------------------------
         areaResultados = new JTextArea();
         areaResultados.setEditable(false);
-        areaResultados.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        areaResultados.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        areaResultados.setMargin(new Insets(10, 10, 10, 10));
+        areaResultados.setBackground(new Color(250, 250, 255));
+        areaResultados.setBorder(BorderFactory.createLineBorder(new Color(220, 225, 245), 1, true));
 
         JScrollPane scroll = new JScrollPane(areaResultados);
-        add(scroll, BorderLayout.CENTER);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        cardPanel.add(scroll, BorderLayout.CENTER);
+
+        // ---------------------------
+        // ADICIONA CARD AO FRAME
+        // ---------------------------
+        add(cardPanel);
+
+        // ---------------------------
+        // AÇÃO DO BOTÃO
+        // ---------------------------
+        botaoPesquisar.addActionListener(e -> pesquisar());
 
         setVisible(true);
     }
 
-    private JButton criarBotao(String texto, Color cor) {
-        JButton btn = new JButton(texto);
-        btn.setForeground(Color.WHITE);
-        btn.setBackground(cor);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        return btn;
-    }
-
-    // ============================
-    //    FUNÇÃO DE PESQUISA
-    // ============================
+    // ===========================================
+    //              FUNÇÃO DE PESQUISA
+    // ===========================================
     private void pesquisar() {
         String opcao = (String) caixaBusca.getSelectedItem();
         areaResultados.setText("");
 
         switch (opcao) {
 
-            // ============================
-            //          PACIENTES
-            // ============================
             case "Pacientes":
                 areaResultados.append("📌 Lista de Pacientes:\n\n");
                 for (Atendimento a : atendimentoDAO.listar()) {
                     Paciente p = a.getPaciente();
                     areaResultados.append(
-                        "ID: " + p.getId() + " | " +
-                        p.getNome() + " | Telefone: " + p.getTelefone() +
-                        "\n"
+                            "ID: " + p.getId() + " | "
+                                    + p.getNome() + " | Telefone: " + p.getTelefone() + "\n"
                     );
                 }
                 break;
 
-            // ============================
-            //        CONSULTAS
-            // ============================
             case "Consultas":
                 areaResultados.append("📅 Lista de Consultas:\n\n");
                 for (Agendamento ag : agendamentoDAO.listar()) {
                     areaResultados.append(
-                        "ID: " + ag.getId() +
-                        "\nPaciente: " + ag.getPaciente().getNome() +
-                        "\nMédico: " + ag.getMedico().getNome() +
-                        "\nData/Hora: " + ag.getDataHora() +
-                        "\nStatus: " + ag.getStatus() +
-                        "\n-----------------------------\n"
+                            "ID: " + ag.getId()
+                                    + "\nPaciente: " + ag.getPaciente().getNome()
+                                    + "\nMédico: " + ag.getMedico().getNome()
+                                    + "\nData/Hora: " + ag.getDataHora()
+                                    + "\nStatus: " + ag.getStatus()
+                                    + "\n-----------------------------\n"
                     );
                 }
                 break;
 
-            // ============================
-            //          MÉDICOS
-            // ============================
             case "Médicos":
                 areaResultados.append("👨‍⚕️ Lista de Médicos:\n\n");
                 medicoDAO.listar().forEach(m -> {
                     areaResultados.append(
-                        "ID: " + m.getId() +
-                        " | " + m.getNome() +
-                        " | CRM: " + m.getCrm() +
-                        " | Especialidade: " + m.getEspecialidade() +
-                        "\n"
+                            "ID: " + m.getId()
+                                    + " | " + m.getNome()
+                                    + " | CRM: " + m.getCrm()
+                                    + " | Especialidade: " + m.getEspecialidade()
+                                    + "\n"
                     );
                 });
                 break;
 
-            // ============================
-            //          EXAMES
-            // Obs: nenhum DAO de exames foi fornecido,
-            // vou buscar nos atendimentos.
-            // ============================
             case "Exames":
                 areaResultados.append("🧪 Exames encontrados:\n\n");
                 for (Atendimento at : atendimentoDAO.listar()) {
                     areaResultados.append(
-                        "Paciente: " + at.getPaciente().getNome() +
-                        "\nDiagnóstico: " + at.getDiagnostico() +
-                        "\nSintomas: " + at.getSintomas() +
-                        "\nObservações: " + at.getObservacoes() +
-                        "\n---------------------------\n"
+                            "Paciente: " + at.getPaciente().getNome()
+                                    + "\nDiagnóstico: " + at.getDiagnostico()
+                                    + "\nSintomas: " + at.getSintomas()
+                                    + "\nObservações: " + at.getObservacoes()
+                                    + "\n---------------------------\n"
                     );
                 }
                 break;
         }
     }
 }
+
