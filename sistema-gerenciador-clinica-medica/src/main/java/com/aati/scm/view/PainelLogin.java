@@ -182,7 +182,7 @@ public class PainelLogin extends JPanel {
             janela.dispose();
     
             // ABRIR JANELA DE RELATÓRIO (QUE É UM JFRAME)
-            PainelRelatorio telaRelatorio = new PainelRelatorio();
+            PainelRelatorio telaRelatorio = new PainelRelatorio( );
             telaRelatorio.setLocationRelativeTo(null);
             telaRelatorio.setVisible(true);
     

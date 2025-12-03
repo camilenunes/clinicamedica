@@ -13,7 +13,6 @@ import com.aati.scm.model.dao.LoginDAO;
 
 public class PainelCadastro extends JPanel {
 
-    // Campos
     private JTextField campoNome;
     private JTextField campoUsername;
     private JPasswordField campoSenha;
@@ -26,10 +25,11 @@ public class PainelCadastro extends JPanel {
     private LoginDAO loginDAO;
 
     public PainelCadastro() throws SQLException {
+
         this.loginDAO = new LoginDAO(ConnectionFactory.getConnection());
 
         setLayout(new BorderLayout(20, 20));
-        setBorder(new EmptyBorder(20, 20, 20, 20));
+        setBorder(new EmptyBorder(20, 30, 20, 30));
         setBackground(new Color(245, 248, 255));
 
         // ---------------------------------------------------------
@@ -43,59 +43,48 @@ public class PainelCadastro extends JPanel {
         add(titulo, BorderLayout.NORTH);
 
         // ---------------------------------------------------------
-        // FORMULÁRIO
+        // PAINEL DO FORMULÁRIO (GridBagLayout)
         // ---------------------------------------------------------
-        JPanel painelForm = new JPanel(new GridLayout(5, 2, 15, 15));
+        JPanel painelForm = new JPanel(new GridBagLayout());
         painelForm.setBackground(Color.WHITE);
         painelForm.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(210, 220, 240), 1, true),
-            new EmptyBorder(20, 30, 20, 30)
+                BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true),
+                new EmptyBorder(25, 30, 25, 30)
         ));
 
-        // LABELSF
-        JLabel labelNome = criarLabel("Nome Completo:");
-        JLabel labelUsername = criarLabel("Username:");
-        JLabel labelSenha = criarLabel("Senha:");
-        JLabel labelPapel = criarLabel("Papel:");
-        JLabel labelAtivo = criarLabel("Ativo:");
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(12, 10, 12, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // CAMPOS
-        campoNome = criarCampoTexto();
-        campoUsername = criarCampoTexto();
+        Font fonte = new Font("Segoe UI", Font.PLAIN, 15);
+
+        campoNome = criarCampoTexto(fonte);
+        campoUsername = criarCampoTexto(fonte);
         campoSenha = new JPasswordField();
-        campoSenha.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        campoSenha.setFont(fonte);
         campoSenha.setBorder(BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true));
 
         comboPapel = new JComboBox<>(PapelUsario.values());
-        comboPapel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        comboPapel.setFont(fonte);
 
-        checkAtivo = new JCheckBox("Sim");
+        checkAtivo = new JCheckBox("Ativo");
+        checkAtivo.setFont(fonte);
         checkAtivo.setSelected(true);
         checkAtivo.setBackground(Color.WHITE);
-        checkAtivo.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 
-        // ADICIONA CAMPOS NO FORMULÁRIO
-        painelForm.add(labelNome);
-        painelForm.add(campoNome);
-
-        painelForm.add(labelUsername);
-        painelForm.add(campoUsername);
-
-        painelForm.add(labelSenha);
-        painelForm.add(campoSenha);
-
-        painelForm.add(labelPapel);
-        painelForm.add(comboPapel);
-
-        painelForm.add(labelAtivo);
-        painelForm.add(checkAtivo);
+        // Adicionar linhas
+        adicionarLinha(painelForm, gbc, 0, "Nome Completo:", campoNome);
+        adicionarLinha(painelForm, gbc, 1, "Username:", campoUsername);
+        adicionarLinha(painelForm, gbc, 2, "Senha:", campoSenha);
+        adicionarLinha(painelForm, gbc, 3, "Papel:", comboPapel);
+        adicionarLinha(painelForm, gbc, 4, "Ativo:", checkAtivo);
 
         add(painelForm, BorderLayout.CENTER);
 
         // ---------------------------------------------------------
         // BOTÕES
         // ---------------------------------------------------------
-        JPanel painelBotoes = new JPanel();
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         painelBotoes.setBackground(new Color(245, 248, 255));
 
         botaoSalvar = criarBotao("Salvar", new Color(46, 139, 87));
@@ -106,14 +95,24 @@ public class PainelCadastro extends JPanel {
 
         add(painelBotoes, BorderLayout.SOUTH);
 
+        // ---------------------------------------------------------
         // AÇÕES
+        // ---------------------------------------------------------
         botaoSalvar.addActionListener(e -> salvarUsuario());
         botaoLimpar.addActionListener(e -> limparCampos());
     }
 
     // ---------------------------------------------------------
-    // MÉTODOS DE UTILIDADE
+    // MÉTODOS DE FORMATAÇÃO
     // ---------------------------------------------------------
+
+    private JTextField criarCampoTexto(Font fonte) {
+        JTextField txt = new JTextField();
+        txt.setFont(fonte);
+        txt.setBorder(BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true));
+        txt.setPreferredSize(new Dimension(350, 35)); // <-- CAMPO GRANDE
+        return txt;
+    }
 
     private JLabel criarLabel(String texto) {
         JLabel label = new JLabel(texto);
@@ -122,20 +121,28 @@ public class PainelCadastro extends JPanel {
         return label;
     }
 
-    private JTextField criarCampoTexto() {
-        JTextField txt = new JTextField();
-        txt.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txt.setBorder(BorderFactory.createLineBorder(new Color(200, 210, 230), 1, true));
-        return txt;
+    private void adicionarLinha(JPanel painel, GridBagConstraints gbc, int linha, String texto, JComponent campo) {
+
+        gbc.gridy = linha;
+
+        // Label
+        gbc.gridx = 0;
+        gbc.weightx = 0.2;
+        painel.add(criarLabel(texto), gbc);
+
+        // Campo
+        gbc.gridx = 1;
+        gbc.weightx = 0.8;
+        painel.add(campo, gbc);
     }
 
     private JButton criarBotao(String texto, Color cor) {
         JButton btn = new JButton(texto);
-        btn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btn.setFont(new Font("Segoe UI", Font.BOLD, 15));
         btn.setForeground(Color.WHITE);
         btn.setBackground(cor);
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        btn.setBorder(new EmptyBorder(10, 20, 10, 20));
+        btn.setBorder(new EmptyBorder(10, 25, 10, 25));
 
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -159,8 +166,8 @@ public class PainelCadastro extends JPanel {
 
             login.setNomeCompleto(campoNome.getText());
             login.setUsername(campoUsername.getText());
-            login.setSenha(new String(campoSenha.getPassword())); // hash depois
-            login.setPapel(PapelUsario.valueOf(comboPapel.getSelectedItem().toString()));
+            login.setSenha(new String(campoSenha.getPassword()));
+            login.setPapel((PapelUsario) comboPapel.getSelectedItem());
             login.setAtivo(checkAtivo.isSelected());
 
             loginDAO.inserir(login);
@@ -170,9 +177,9 @@ public class PainelCadastro extends JPanel {
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this,
-                "Erro ao salvar usuário: " + e.getMessage(),
-                "Erro",
-                JOptionPane.ERROR_MESSAGE
+                    "Erro ao salvar usuário: " + e.getMessage(),
+                    "Erro",
+                    JOptionPane.ERROR_MESSAGE
             );
         }
     }
