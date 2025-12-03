@@ -1,6 +1,9 @@
 package com.aati.scm.view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.sql.SQLException;
+
 import javax.swing.*;
 
 import com.aati.scm.model.dao.AgendamentoDAO;
@@ -78,6 +81,20 @@ public class PainelRelatorio extends JFrame {
         botaoPesquisar.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
         botaoPesquisar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+        JButton voltar = new JButton("Voltar");
+        voltar.addActionListener((ActionEvent e )-> {
+            TelaPrincipal telaPrincipal;
+            try {
+                telaPrincipal = new TelaPrincipal();
+                telaPrincipal.setVisible(true);
+                this.setVisible(false);
+            } catch (SQLException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+           
+        });
+        painelSuperior.add(voltar);
         painelSuperior.add(labelBusca);
         painelSuperior.add(caixaBusca);
         painelSuperior.add(botaoPesquisar);
