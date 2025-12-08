@@ -1,11 +1,27 @@
 package com.aati.scm.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.HeadlessException;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import com.aati.scm.config.ConnectionFactory;
 import com.aati.scm.model.dao.LoginDAO;
@@ -182,11 +198,11 @@ public class PainelLogin extends JPanel {
             janela.dispose();
     
             // ABRIR JANELA DE RELATÓRIO (QUE É UM JFRAME)
-            PainelRelatorio telaRelatorio = new PainelRelatorio( );
-            telaRelatorio.setLocationRelativeTo(null);
-            telaRelatorio.setVisible(true);
+            TelaPrincipal telaPrincipal = new TelaPrincipal( );
+            telaPrincipal.setLocationRelativeTo(null);
+            telaPrincipal.setVisible(true);
     
-        } catch (Exception e) {
+        } catch (HeadlessException | SQLException e) {
             JOptionPane.showMessageDialog(this,
                 "Erro ao realizar login: " + e.getMessage(),
                 "Erro",

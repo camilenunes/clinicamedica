@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
-public class TelaPrincipal extends JFrame {
+public class TelaLogin extends JFrame {
 
-    public TelaPrincipal() throws SQLException {
+    public TelaLogin() throws SQLException {
         setTitle("🏥 Sistema de Clínica Médica");
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -16,12 +16,11 @@ public class TelaPrincipal extends JFrame {
         // Criar o componente de abas
         JTabbedPane abas = new JTabbedPane();
 
+        // Adicionar os módulos (cada um é um JPanel)
+        abas.addTab("Login", new PainelLogin());
+        abas.addTab("Cadastro usuário", new PainelCadastro());
         
-        abas.addTab("Pacientes", new PainelPacientes());
-        abas.addTab("Médicos", new PainelMedicos());
-        abas.addTab("Consultas", new PainelAgendamento());
-        abas.addTab("Prontuário", new PainelAtendimentos());
-        abas.add("Relatórios", new PainelRelatorio());
         add(abas);
     }
+
 }
