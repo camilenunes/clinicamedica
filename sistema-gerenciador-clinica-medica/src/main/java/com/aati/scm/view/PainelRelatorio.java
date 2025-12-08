@@ -1,17 +1,33 @@
 package com.aati.scm.view;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import com.aati.scm.model.dao.AgendamentoDAO;
 import com.aati.scm.model.dao.AtendimentoDAO;
 import com.aati.scm.model.dao.MedicoDAO;
-import com.aati.scm.model.entity.*;
+import com.aati.scm.model.entity.Agendamento;
+import com.aati.scm.model.entity.Atendimento;
+import com.aati.scm.model.entity.Paciente;
 
-public class PainelRelatorio extends JFrame {
+public class PainelRelatorio extends JPanel {
 
     private JComboBox<String> caixaBusca;
     private JButton botaoPesquisar;
@@ -23,10 +39,6 @@ public class PainelRelatorio extends JFrame {
 
     public PainelRelatorio() {
 
-        setTitle("📊 Tela de Relatórios");
-        setSize(700, 520);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
 
         // ---------------------------
         // TEMA GERAL
@@ -35,7 +47,6 @@ public class PainelRelatorio extends JFrame {
         Color card = new Color(255, 255, 255);
         Color azul = new Color(52, 120, 235);
 
-        getContentPane().setBackground(fundo);
         setLayout(new GridBagLayout()); // deixa tudo centralizado
 
         // ---------------------------
